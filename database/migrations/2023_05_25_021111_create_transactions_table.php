@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->integer('product_id')->unsigned();
+            $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('quantity');
             $table->datetime('transaction_date');
             $table->timestamps();
+
+//            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
