@@ -16,12 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 //            $table->foreignId('product_id')->constrained();
-            $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
-            $table->datetime('sold_at');
+            $table->integer('jumlah');
+            $table->decimal('harga_jual', 10, 2);
+            $table->date('sold_at');
             $table->timestamps();
 
-//            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

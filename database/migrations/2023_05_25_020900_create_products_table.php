@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
-            $table->string('category');
-            $table->decimal('price', 10, 2);
+            $table->text('deskripsi');
+            $table->string('kategori');
+            $table->decimal('harga_produk', 10, 2);
             $table->integer('stock');
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('Users')->onDelete('cascade');
+//            $table->date('')
             $table->timestamps();
         });
     }
