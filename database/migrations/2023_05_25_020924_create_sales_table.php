@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('sale', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
 //            $table->foreignId('product_id')->constrained();
-            $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
-            $table->datetime('sold_at');
+            $table->unsignedBigInteger('pembeli');
+            $table->foreign('pembeli')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('jumlah');
+            $table->decimal('harga_jual', 10, 2);
+            $table->date('transaction_date');
             $table->timestamps();
 
-//            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

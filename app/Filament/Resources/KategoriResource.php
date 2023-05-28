@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\StockResource\Pages;
-use App\Filament\Resources\StockResource\RelationManagers;
-use App\Models\Stock;
+use App\Filament\Resources\KategoriResource\Pages;
+use App\Filament\Resources\KategoriResource\RelationManagers;
+use App\Models\Kategori;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,22 +13,20 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StockResource extends Resource
+class KategoriResource extends Resource
 {
-//    protected static ?string $model = Stock::class;
-    protected static ?string $modelLabel = 'Stok';
-    protected static ?string $navigationIcon = 'heroicon-o-chart-pie';
+//    protected static ?string $model = Kategori::class;
+    protected static ?string $modelLabel ='Katagori';
+    protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('product_id')
-                    ->required(),
-                Forms\Components\TextInput::make('quantity')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('last_updated')
-                    ->required(),
+                Forms\Components\TextInput::make('namakategori')
+                    ->label('Nama kategori')
+                    ->required()
+                    ->maxLength(20),
             ]);
     }
 
@@ -36,13 +34,13 @@ class StockResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_id'),
-                Tables\Columns\TextColumn::make('quantity'),
-                Tables\Columns\TextColumn::make('last_updated')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('namakategori')
+                ->label('Nama Kategori'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Updated_at')
                     ->dateTime(),
             ])
             ->filters([
@@ -66,9 +64,9 @@ class StockResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStocks::route('/'),
-            'create' => Pages\CreateStock::route('/create'),
-            'edit' => Pages\EditStock::route('/{record}/edit'),
+            'index' => Pages\ListKategoris::route('/'),
+            'create' => Pages\CreateKategori::route('/create'),
+            'edit' => Pages\EditKategori::route('/{record}/edit'),
         ];
     }
 }

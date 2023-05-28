@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SaleResource extends Resource
 {
 //    protected static ?string $model = Sale::class;
-    protected static ?string $modelLabel ='Penjualan';
+    protected static ?string $modelLabel = 'Penjualan';
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
 
     public static function form(Form $form): Form
@@ -25,11 +25,13 @@ class SaleResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('product_id')
                     ->required(),
-                Forms\Components\TextInput::make('quantity')
+                Forms\Components\TextInput::make('pembeli')
                     ->required(),
-                Forms\Components\TextInput::make('total_price')
+                Forms\Components\TextInput::make('jumlah')
                     ->required(),
-                Forms\Components\DateTimePicker::make('sold_at')
+                Forms\Components\TextInput::make('harga_jual')
+                    ->required(),
+                Forms\Components\DatePicker::make('transaction_date')
                     ->required(),
             ]);
     }
@@ -39,10 +41,11 @@ class SaleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('product_id'),
-                Tables\Columns\TextColumn::make('quantity'),
-                Tables\Columns\TextColumn::make('total_price'),
-                Tables\Columns\TextColumn::make('sold_at')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('pembeli'),
+                Tables\Columns\TextColumn::make('jumlah'),
+                Tables\Columns\TextColumn::make('harga_jual'),
+                Tables\Columns\TextColumn::make('transaction_date')
+                    ->date(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')

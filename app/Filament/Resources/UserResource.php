@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UserResource extends Resource
 {
 //    protected static ?string $model = User::class;
-    protected static ?string $modelLabel = 'User List';
+    protected static ?string $modelLabel ='Manage User';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
@@ -54,15 +54,19 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('two_factor_secret'),
-                Tables\Columns\TextColumn::make('two_factor_recovery_codes'),
+                Tables\Columns\TextColumn::make('two_factor_secret')
+                ->hidden(),
+                Tables\Columns\TextColumn::make('two_factor_recovery_codes')
+                ->hidden(),
                 Tables\Columns\TextColumn::make('two_factor_confirmed_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('current_team_id'),
                 Tables\Columns\TextColumn::make('profile_photo_path'),
                 Tables\Columns\TextColumn::make('created_at')
+//                    ->hidden()
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->hidden()
                     ->dateTime(),
             ])
             ->filters([

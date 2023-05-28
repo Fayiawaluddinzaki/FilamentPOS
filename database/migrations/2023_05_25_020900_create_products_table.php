@@ -11,13 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
-            $table->string('category');
-            $table->decimal('price', 10, 2);
+            $table->text('deskripsi');
+            $table->unsignedBigInteger('id_kategori');
+            $table->foreign('id_kategori')->references('id')->on('kategori')->onDelete('cascade');
+//            $table->string('kategori');
+//            $table->integer('harga_produk');
+            $table->decimal('harga_produk', 10, 2);
             $table->integer('stock');
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('Users')->onDelete('cascade');
+            $table->unsignedBigInteger('supplier_id');
+            $table->foreign('supplier_id')->references('id')->on('supplier')->onDelete('cascade');
+//            $table->foreignId('supplier_id')->constrained();
+//            $table->date('')
             $table->timestamps();
         });
     }

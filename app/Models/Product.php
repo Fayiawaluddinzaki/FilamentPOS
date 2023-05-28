@@ -9,9 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'products';
+    protected $table = 'product';
 
-    protected $fillable = ['name', 'description', 'category', 'price', 'stock'];
+    protected $fillable = ['name', 'deskripsi', 'id_kategori', 'harga_produk', 'stock' , 'supplier_id' ,'created_by'];
 
     public function sales()
     {
@@ -21,5 +21,10 @@ class Product extends Model
     public function stock()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
     }
 }

@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Kategori;
 use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -16,23 +19,35 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ProductResource extends Resource
 {
 //    protected static ?string $model = Product::class;
-    protected static ?string $modelLabel ='Produk';
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
+    protected static ?string $modelLabel = 'Product';
+    protected static ?string $navigationIcon = 'heroicon-o-cake';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\select::make('created_by')
+                    ->label('Author')
+                    ->options(User::query()->pluck('name','id'))
+                    ->required(),
+//                    ->hidden(),
+                Forms\Components\select::make('supplier_id')
+                    ->placeholder('Nama Supplier')
+                    ->options(Supplier::query()->pluck('name','id'))
+                    ->label('Supplier')
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\Textarea::make('deskripsi')
                     ->required()
                     ->maxLength(65535),
-                Forms\Components\TextInput::make('category')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('price')
+                Forms\Components\select::make('id_kategori')
+                    ->placeholder('Kategori')
+                    ->options(Kategori::query()->pluck('namakategori','id'))
+                    ->required(),
+//                    ->maxLength(255),
+                Forms\Components\TextInput::make('harga_produk')
                     ->required(),
                 Forms\Components\TextInput::make('stock')
                     ->required(),
@@ -43,14 +58,19 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('created_by'),
+                Tables\Columns\TextColumn::make('supplier_id'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('category'),
-                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('id_kategori'),
+                Tables\Columns\TextColumn::make('harga_produk')
+                ->money('idr'),
                 Tables\Columns\TextColumn::make('stock'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->hidden()
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->hidden()
                     ->dateTime(),
             ])
             ->filters([
