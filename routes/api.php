@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\UserResource;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +20,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/user',function ()
+{
+    $user = User::orderBy('id')->get();
+        return UserResource::collection($user);
+});
+
+Route::get('/product', function ()
+{
+   $produk = Product::get();
+//   OrderBy('id','DESC')->get();
+   return ProductResource::collection($produk);
+//    dd($produk);
 });

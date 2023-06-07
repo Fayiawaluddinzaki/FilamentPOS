@@ -2,8 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use Filament\Facades\Filament;
+use Filament\Tables\Filters\Filter;
 use App\Models\Kategori;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -15,6 +19,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+//use PHPUnit\Util\Filter;
 
 class ProductResource extends Resource
 {
@@ -58,14 +63,24 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_by'),
-                Tables\Columns\TextColumn::make('supplier_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('deskripsi'),
-                Tables\Columns\TextColumn::make('id_kategori'),
+                Tables\Columns\TextColumn::make('created_by')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('supplier_id')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('id_kategori')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('harga_produk')
-                ->money('idr'),
-                Tables\Columns\TextColumn::make('stock'),
+                    ->searchable()
+                    ->money('idr')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('stock')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->hidden()
                     ->dateTime(),
@@ -74,14 +89,22 @@ class ProductResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Filter::make('harga_produk')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
+            ->headerActions([
+                FilamentExportHeaderAction::make('Export to Excel')
+                ->fileName('Cetak Hasil')
+                ->directDownload()
+                ->defaultFormat('xlsx'),
+            ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+                FilamentExportBulkAction::make('export'),
             ]);
+
     }
 
     public static function getRelations(): array

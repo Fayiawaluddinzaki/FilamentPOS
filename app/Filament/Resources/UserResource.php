@@ -12,6 +12,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -24,25 +25,37 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nama')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
+                    ->label('Alamat Email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\DateTimePicker::make('email_verified_at')
+                    ->hidden(),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->dehydrateStateUsing(fn ($state)=>Hash::make($state))
+                    ->dehydrated(fn ($state)=>filled($state))
+//                    ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('two_factor_secret')
+                    ->hidden()
                     ->maxLength(65535),
                 Forms\Components\Textarea::make('two_factor_recovery_codes')
+                    ->hidden()
                     ->maxLength(65535),
-                Forms\Components\DateTimePicker::make('two_factor_confirmed_at'),
+                Forms\Components\DateTimePicker::make('two_factor_confirmed_at')
+                    ->hidden(),
                 Forms\Components\TextInput::make('current_team_id'),
-                Forms\Components\TextInput::make('profile_photo_path')
-                    ->maxLength(2048),
+                Forms\Components\FileUpload::make('profile_photo_path')
+//                    ->maxLength(2048)
+                    ->image()
+                    ->label('Profile Photo')
+                    ->required()
+                    ->maxSize(5000),
             ]);
     }
 
@@ -60,8 +73,9 @@ class UserResource extends Resource
                 ->hidden(),
                 Tables\Columns\TextColumn::make('two_factor_confirmed_at')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('current_team_id'),
-                Tables\Columns\TextColumn::make('profile_photo_path'),
+                Tables\Columns\TextColumn::make('current_team_id')
+                    ->label('Team ID'),
+                Tables\Columns\ImageColumn::make('profile_photo_path'),
                 Tables\Columns\TextColumn::make('created_at')
 //                    ->hidden()
                     ->dateTime(),
